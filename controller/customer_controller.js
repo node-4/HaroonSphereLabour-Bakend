@@ -8,11 +8,11 @@ const otpGenerator = require('otp-generators')
 const customersigninupbymobilenumber = (req, res) => {
     const mobilenumber = req.body.mobilenumber;
     const usertype = "customer";
-     const emailid = req.body.emailid;
+    const emailid = req.body.emailid;
 
-    customermodel.find({mobilenumber:mobilenumber , isdeleted: false }).then((resp) => {
+    customermodel.find({ mobilenumber: mobilenumber, isdeleted: false }).then((resp) => {
         if (resp.length > 0) {
-            res.status(200).json({
+            return res.status(200).json({
                 StatusCode: 200,
                 Status: 'exsist',
                 data: {
@@ -20,12 +20,12 @@ const customersigninupbymobilenumber = (req, res) => {
                     status: 'exsist'
                 }
             })
-        }else {
+        } else {
             const customer = new customermodel({
-               
+
                 mobilenumber: mobilenumber,
-                usertype:usertype,
-                 emailid:emailid
+                usertype: usertype,
+                emailid: emailid
 
             });
             customer.save().then((result) => {
@@ -35,11 +35,11 @@ const customersigninupbymobilenumber = (req, res) => {
                     message: 'customer mobileno. reg sucessfully',
                     user: result,
                 }
-                res.send(response)
+                return res.send(response)
             })
                 .catch((err) => {
                     console.log(err)
-                    res.send({
+                    return res.send({
                         status: 400,
                         error: err.message,
                     })
@@ -114,23 +114,21 @@ const customersigninupbymobilenumber = (req, res) => {
 
 // }
 
-const sendOtp = async(req,res) => {
-    try{
-const mobile = req.body.mobile
- const labourData = await customermodel.findOne({mobilenumber: mobile});
- if(labourData){
-    return res.status(201).json({
-        details : labourData.otp
-    })
- }else{
- const otp  = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChar: false });
+const sendOtp = async (req, res) => {
+    try {
+        const mobile = req.body.mobile
+        const labourData = await customermodel.findOne({ mobilenumber: mobile });
+        if (labourData) {
+            return res.status(201).json({
+                details: labourData.otp
+            })
+        } else {
+            const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChar: false });
 
- const data = await customermodel.create({mobilenumber: mobile, otp: otp});
- res.status(200).json({
-    message: data
- })
-}
-    }catch(err){
+            const data = await customermodel.create({ mobilenumber: mobile, otp: otp });
+            return res.status(200).json({ message: data })
+        }
+    } catch (err) {
         res.status(400).json({
             message: err.message
         })
@@ -138,16 +136,16 @@ const mobile = req.body.mobile
 }
 
 
-const verifyOtp = async(req,res) => {
-    try{
-const otp = req.body.otp;
-const data = await customermodel.findOne({otp: otp});
-if(!data){
-    return res.status(500).json({message: "Otp Wrong "})
-}else{
-     res.status(200).json({message:"Login Done ", ID: data._id})
-}
-    }catch(err){
+const verifyOtp = async (req, res) => {
+    try {
+        const otp = req.body.otp;
+        const data = await customermodel.findOne({ otp: otp });
+        if (!data) {
+            return res.status(500).json({ message: "Otp Wrong " })
+        } else {
+            return res.status(200).json({ message: "Login Done ", ID: data._id })
+        }
+    } catch (err) {
         res.status(400).json({
             message: err.message
         })
@@ -156,9 +154,9 @@ if(!data){
 
 const customersignin = (req, res) => {
     const mobilenumber = req.body.mobilenumber;
-     const password = req.body.password;
+    const password = req.body.password;
 
-    customermodel.find({ mobilenumber: mobilenumber, password: password})
+    customermodel.find({ mobilenumber: mobilenumber, password: password })
         .then((result) => {
             console.log(result)
             if (result.length > 0) {
@@ -176,7 +174,7 @@ const customersignin = (req, res) => {
                     customergstnumber: result[0].gstnumber,
                 }
                 console.log(req.session.customerdetails);
-                res.status(200).json({
+                return res.status(200).json({
                     StatusCode: 200,
                     Status: 'success',
                     data: {
@@ -187,7 +185,7 @@ const customersignin = (req, res) => {
                 })
             }
             else {
-                res.status(200).send('user not found');
+                return res.status(200).send('user not found');
             }
         })
 
@@ -204,11 +202,11 @@ const customerprofilegetbyid = (req, res) => {
             message: 'Get customer profile successfully',
             user: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -241,27 +239,27 @@ const updatecustomerdetails = (req, res) => {
         result.typeofshop = typeofshop;
         result.gstnumber = gstnumber;
         result.password = password
-        return  result.save().then((result) => {
-           
-                const response = {
-                    StatusCode: 200,
-                    Status: 'sucess',
-                    message: 'customer mobileno. reg sucessfully',
-                    user: result,
-                }
-                res.send(response)
-            })
-                .catch((err) => {
-                    console.log(err)
-                    res.send({
-                        status: 400,
-                        error: err.message,
-                    })
-                })
-            
+        return result.save().then((result) => {
+
+            const response = {
+                StatusCode: 200,
+                Status: 'sucess',
+                message: 'customer mobileno. reg sucessfully',
+                user: result,
+            }
+            return res.send(response)
         })
-    
-    
+            .catch((err) => {
+                console.log(err)
+                return res.send({
+                    status: 400,
+                    error: err.message,
+                })
+            })
+
+    })
+
+
 
 }
 
@@ -284,28 +282,28 @@ const customerlogout = async (req, res) => {
 
 }
 
-const DeleCuestomer = async(req,res) =>  {
-    try{
-    await customermodel.findByIdAndDelete({_id: req.params.id})
-    res.status(200).json({
-        message: "Deleted Cuestomer"
-    })
-    }catch(err){
+const DeleCuestomer = async (req, res) => {
+    try {
+        await customermodel.findByIdAndDelete({ _id: req.params.id })
+        res.status(200).json({
+            message: "Deleted Cuestomer"
+        })
+    } catch (err) {
         res.status(400).json({
             message: err.message
         })
     }
 }
 
-const AddCuestomerId = async(req,res) => {
-    try{
-        await customermodel.findByIdAndUpdate({_id: req.params.id},{
+const AddCuestomerId = async (req, res) => {
+    try {
+        await customermodel.findByIdAndUpdate({ _id: req.params.id }, {
             customerId: req.body.customerId
-        }, {new: true})
+        }, { new: true })
         res.status(200).json({
             message: "Create"
         })
-    }catch(err){
+    } catch (err) {
         res.status(400).json({
             message: err.message
         })
