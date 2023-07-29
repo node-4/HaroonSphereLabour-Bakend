@@ -68,7 +68,7 @@ const customersigninupbymobilenumber = (req, res) => {
 //     const usertype = "customer";
 //     customermodel.find({ emailid: emailid, isdeleted: false }).then((resp) => {
 //         if (resp.length > 0) {
-//             res.status(200).json({
+//     return res.status(200).json({
 //                 StatusCode: 200,
 //                 Status: 'exsist',
 //                 data: {
@@ -129,7 +129,7 @@ const sendOtp = async (req, res) => {
             return res.status(200).json({ message: data })
         }
     } catch (err) {
-        res.status(400).json({
+        return res.status(400).json({
             message: err.message
         })
     }
@@ -146,7 +146,7 @@ const verifyOtp = async (req, res) => {
             return res.status(200).json({ message: "Login Done ", ID: data._id })
         }
     } catch (err) {
-        res.status(400).json({
+        return res.status(400).json({
             message: err.message
         })
     }
@@ -266,7 +266,7 @@ const updatecustomerdetails = (req, res) => {
 const customerlogout = async (req, res) => {
     try {
         req.session.destroy();
-        res.status(200).json({
+        return res.status(200).json({
             StatusCode: 200,
             Status: 'success',
             message: 'logout success',
@@ -275,7 +275,7 @@ const customerlogout = async (req, res) => {
         })
     } catch (error) {
         console.log(error.message);
-        res.status(400).json({
+        return res.status(400).json({
             message: err.message
         })
     }
@@ -285,11 +285,11 @@ const customerlogout = async (req, res) => {
 const DeleCuestomer = async (req, res) => {
     try {
         await customermodel.findByIdAndDelete({ _id: req.params.id })
-        res.status(200).json({
+        return res.status(200).json({
             message: "Deleted Cuestomer"
         })
     } catch (err) {
-        res.status(400).json({
+        return res.status(400).json({
             message: err.message
         })
     }
@@ -300,11 +300,11 @@ const AddCuestomerId = async (req, res) => {
         await customermodel.findByIdAndUpdate({ _id: req.params.id }, {
             customerId: req.body.customerId
         }, { new: true })
-        res.status(200).json({
+        return res.status(200).json({
             message: "Create"
         })
     } catch (err) {
-        res.status(400).json({
+        return res.status(400).json({
             message: err.message
         })
     }

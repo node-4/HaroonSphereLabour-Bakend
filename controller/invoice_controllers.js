@@ -26,13 +26,13 @@ exports.AddInvoice = async(req,res) => {
             total: req.body.total 
         }
         const Data = await Invoive.create(data);
-        res.status(200).json({
+       return res.status(200).json({
             message: Data
         })
     }
     }
     }catch(err){
-        res.status(400).json({
+       return res.status(400).json({
             message: err.message
         })
     }
@@ -49,11 +49,11 @@ exports.updateInvoice = async(req,res) => {
         total: req.body.total 
        
     }, {new : true})
-    res.status(200).json({
+   return res.status(200).json({
         message: "Updated "
     })
     }catch(err){
-        res.status(400).json({
+       return res.status(400).json({
             message: err.message
         })
     }
@@ -63,16 +63,16 @@ exports.GetAllInvoice = async(req,res) => {
     try{
         const data = await Invoive.find().populate('cuestomerId')
         if(data.length == 0 ){
-            res.status(500).json({
+           return res.status(500).json({
                 message: "No Data Found in DB "
             })
         }else{
-        res.status(200).json({
+       return res.status(200).json({
             message: data
         })
     }
     }catch(err){
-        res.status(400).json({
+       return res.status(400).json({
             message: err.message
         })
     }
@@ -83,16 +83,16 @@ exports.getInvoiceByID= async(req,res) => {
     try{
         const data = await Invoive.find({cuestomerId: req.params.cuestomerId});
         if(data.length == 0 ){
-            res.status(500).json({
+           return res.status(500).json({
                 message: "No Data Found in DB "
             })
         }else{
-        res.status(200).json({
+       return res.status(200).json({
             message: data
         })
     }
     }catch(err){
-        res.status(400).json({
+       return res.status(400).json({
             message: err.message
         })
     }
@@ -106,17 +106,17 @@ exports.GetByID = async(req,res) =>{
     const data = await Invoive.findById({_id:ID});
     console.log(data)
     if(!data){
-        res.status(500).json({
+       return res.status(500).json({
             message: "No Data Found in DB "
         })
     }else{
-    res.status(200).json({
+   return res.status(200).json({
         message: data
     })
 }
 
 }catch(err){
-    res.status(400).json({
+   return res.status(400).json({
         message: err.message
     })
 }
@@ -125,11 +125,11 @@ exports.GetByID = async(req,res) =>{
 exports.DeleteByID = async(req,res) => {
     try{
        await Invoive.findByIdAndDelete({_id: req.params.id});
-        res.status(200).json({
+       return res.status(200).json({
             message: "Deleted "
         })
     }catch(err){
-        res.status(400).json({
+       return res.status(400).json({
             message: err.message
         })
     }

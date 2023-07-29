@@ -4,18 +4,18 @@ const Banner = require('../model/banner_model')
 //pos Banner--
 module.exports.addBanner = async (req, res) => {
   try {
-      const addBanner = await Banner.create({
-        role: req.body.role,
-        desc: req.body.desc,
-        link: req.body.link
-      });
-      res.status(200).json({
-        msg: "Banner successfully added",
-        data: addBanner,
-        status: true,
-      });
+    const addBanner = await Banner.create({
+      role: req.body.role,
+      desc: req.body.desc,
+      link: req.body.link
+    });
+    return res.status(200).json({
+      msg: "Banner successfully added",
+      data: addBanner,
+      status: true,
+    });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       message: err.message
     })
   }
@@ -24,8 +24,8 @@ module.exports.addBanner = async (req, res) => {
 //Get Banner
 module.exports.getBannerLabour = async (req, res) => {
   try {
-    const getBanner = await Banner.find({role: req.params.role});
-    res.status(200).json({ status: "success", data: getBanner });
+    const getBanner = await Banner.find({ role: req.params.role });
+    return res.status(200).json({ status: "success", data: getBanner });
   } catch (error) {
     console.log(error);
   }
@@ -35,11 +35,11 @@ module.exports.getBannerLabour = async (req, res) => {
 //
 module.exports.getBanner = async (req, res) => {
   try {
-    const getBanner = await Banner.find({role: req.params.role});
-    res.status(200).json({ status: "success", data: getBanner });
+    const getBanner = await Banner.find({ role: req.params.role });
+    return res.status(200).json({ status: "success", data: getBanner });
   } catch (error) {
     console.log(error);
-    
+
   }
 };
 //Update Banner--
@@ -63,7 +63,7 @@ module.exports.editBanner = async (req, res) => {
 module.exports.deleteBanner = async (req, res) => {
   try {
     const response = await Banner.findByIdAndDelete(req.params.id);
-    res.status(200).send({
+    return res.status(200).send({
       msg: "Banner deleted successfully",
       response: response,
       status: true,

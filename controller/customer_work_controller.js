@@ -7,62 +7,62 @@ const labourmodel = require('../model/labour_model')
 const customercreatework = (req, res) => {
 
     // if (req.session.customerdetails != null || req.session.customerdetails != undefined) {
-        
-            const customerid = req.params.cuestomerId
-            const shopname = req.body.shopname;
-            const address = req.body.address;
-            const noofhours = req.body.noofhours;
-            const noofworkers = req.body.noofworkers;
-            const sheduletime = req.body.sheduletime;
-            const paymentstatus = "pending";
-            const workdescription = req.body.workdescription;
-            const d = new Date();
-            let createdateandtime = d.toLocaleString();
-            const customer = new customerworkmodel({
-                customerid: customerid,
-                shopname: shopname,
-                address: address,
-                noofhours: noofhours,
-                noofworkers: noofworkers,
-                sheduletime: sheduletime,
-                paymentstatus:paymentstatus,
-                workdescription: workdescription,
-                status: [
-                    {
 
-                        workcreatedateandtime: d.toLocaleString()
-                    }
-                ],
-                
-                createdateandtime: createdateandtime
+    const customerid = req.params.cuestomerId
+    const shopname = req.body.shopname;
+    const address = req.body.address;
+    const noofhours = req.body.noofhours;
+    const noofworkers = req.body.noofworkers;
+    const sheduletime = req.body.sheduletime;
+    const paymentstatus = "pending";
+    const workdescription = req.body.workdescription;
+    const d = new Date();
+    let createdateandtime = d.toLocaleString();
+    const customer = new customerworkmodel({
+        customerid: customerid,
+        shopname: shopname,
+        address: address,
+        noofhours: noofhours,
+        noofworkers: noofworkers,
+        sheduletime: sheduletime,
+        paymentstatus: paymentstatus,
+        workdescription: workdescription,
+        status: [
+            {
 
-            });
-            customer.save().then((result) => {
-                const response = {
-                    StatusCode: 200,
-                    Status: 'sucess',
-                    message: 'customer work create sucessfully',
-                    user: result,
-                }
-                res.send(response)
+                workcreatedateandtime: d.toLocaleString()
+            }
+        ],
+
+        createdateandtime: createdateandtime
+
+    });
+    customer.save().then((result) => {
+        const response = {
+            StatusCode: 200,
+            Status: 'sucess',
+            message: 'customer work create sucessfully',
+            user: result,
+        }
+        return res.send(response)
+    })
+        .catch((err) => {
+            console.log(err)
+            return res.send({
+                status: 400,
+                error: err.message,
             })
-                .catch((err) => {
-                    console.log(err)
-                    res.send({
-                        status: 400,
-                        error: err.message,
-                    })
-                })
+        })
 
 
 
 
-        //  else {
-        //     res.send('you are not a customer')
-        // }}
+    //  else {
+    //   return  res.send('you are not a customer')
+    // }}
 
     // else {
-    //     res.send('you should login first')
+    //   return  res.send('you should login first')
     // }
 
 }
@@ -77,11 +77,11 @@ const getworkbyid = (req, res) => {
             message: 'Get work by workid successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -99,24 +99,24 @@ const extendwork = async (req, res) => {
     const d = new Date();
     const extendworkinminuite = req.body.extendworkinminuite;
     const extendworkstatus = 'pending';
-    const extendworkpaymentstatus = 'pending'; 
+    const extendworkpaymentstatus = 'pending';
     let extendedworkstatus = [];
     extendedworkstatus.push({
 
         extendminuits: req.body.extendworkinminuite,
         dateandtime: d.toLocaleString()
     })
-    await customerworkmodel.findByIdAndUpdate({_id: workid}, {
-        customerid : customerid,
-        shopname : shopname,
-        address : address,
-        sheduletime : sheduletime,
-        workdescription : workdescription,
-        extendworkinminuite : extendworkinminuite,
-        extentdworkmessage:"Start Extend Work",
-        isextended : 'true',
-        extendworkstatus :extendworkstatus,
-        extendworkpaymentstatus :extendworkpaymentstatus,
+    await customerworkmodel.findByIdAndUpdate({ _id: workid }, {
+        customerid: customerid,
+        shopname: shopname,
+        address: address,
+        sheduletime: sheduletime,
+        workdescription: workdescription,
+        extendworkinminuite: extendworkinminuite,
+        extentdworkmessage: "Start Extend Work",
+        isextended: 'true',
+        extendworkstatus: extendworkstatus,
+        extendworkpaymentstatus: extendworkpaymentstatus,
         extendminuits: req.body.extendworkinminuite,
         dateandtime: d.toLocaleString()
 
@@ -140,18 +140,18 @@ const extendwork = async (req, res) => {
     //     result.extendworkstatus=extendworkstatus;
     //     result.extendworkpaymentstatus =extendworkpaymentstatus;
 
-      
-
-        
-            res.status(200).json({
-                StatusCode: 200,
-                Status: 'success',
-
-                message: 'Extend work successfully',
-                status: 'success',
 
 
-            })
+
+    return res.status(200).json({
+        StatusCode: 200,
+        Status: 'success',
+
+        message: 'Extend work successfully',
+        status: 'success',
+
+
+    })
 }
 
 
@@ -165,11 +165,11 @@ const getextendworkbyworkid = (req, res) => {
             message: 'Get Extend work by workid successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -186,11 +186,11 @@ const getworkhistorybyworkid = (req, res) => {
             message: 'Get Extend work by workid successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -213,4 +213,4 @@ const getworkhistorybyworkid = (req, res) => {
 
 
 
-module.exports = { customercreatework, getworkbyid, extendwork, getextendworkbyworkid,getworkhistorybyworkid }
+module.exports = { customercreatework, getworkbyid, extendwork, getextendworkbyworkid, getworkhistorybyworkid }

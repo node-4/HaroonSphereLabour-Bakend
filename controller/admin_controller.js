@@ -40,11 +40,11 @@ const adminsignup = (req, res) => {
                     message: 'admin Signup sucessfully',
                     user: result,
                 }
-                res.send(response)
+                return res.send(response)
             })
                 .catch((err) => {
                     console.log(err)
-                    res.send({
+                    return res.send({
                         status: 400,
                         error: err.message,
                     })
@@ -139,11 +139,11 @@ const admingetallcustomer = (req, res) => {
             customer: result,
             total: total
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -159,11 +159,11 @@ const admingetcustomerbyid = (req, res) => {
             message: 'Admin get  customer by id successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -178,11 +178,11 @@ const admingetalllabour = (req, res) => {
             message: 'Admin get all labour successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -199,11 +199,11 @@ const admingetlabourbyid = (req, res) => {
             message: 'Admin get labour by id successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -218,11 +218,11 @@ const admingetallwork = (req, res) => {
             message: 'Admin get all work successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -239,11 +239,11 @@ const admingetworkbyworkid = (req, res) => {
             message: 'Admin get work by id successfully.',
             customer: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })

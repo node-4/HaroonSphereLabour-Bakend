@@ -24,11 +24,11 @@ const createstartduty = (req, res) => {
             message: 'duty start',
             user: result,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -41,17 +41,16 @@ const postendduty = (req, res) => {
     const dutyid = req.params._id;
     const d = new Date();
     const endtime = d.toLocaleString();
-   
+
     startdutymodel.findById(dutyid).then((result) => {
 
         result.endtime = endtime;
-       
+
 
         return result.save().then((data) => {
-            res.status(200).json({
+            return res.status(200).json({
                 StatusCode: 200,
                 Status: 'success',
-
                 message: 'End duty',
                 status: 'success',
                 customer: data,
@@ -62,13 +61,13 @@ const postendduty = (req, res) => {
 }
 
 
-const getstartduty = async(req, res) => {
+const getstartduty = async (req, res) => {
     const workid = req.params.workid;
-    const data1 = await customerworkmodel.findById({_id: req.params.workid});
+    const data1 = await customerworkmodel.findById({ _id: req.params.workid });
 
-    startdutymodel.find({workid:workid }).then((data) => {
+    startdutymodel.find({ workid: workid }).then((data) => {
         const Data = {
-            sheduletime : data1.sheduletime, 
+            sheduletime: data1.sheduletime,
             hours: data1.noofhours,
             timewilltake: data1.noofhours,
             desc: data1.workdescription
@@ -79,11 +78,11 @@ const getstartduty = async(req, res) => {
             message: 'get start duty',
             work: Data,
         }
-        res.send(response)
+        return res.send(response)
     })
         .catch((err) => {
             console.log(err)
-            res.send({
+            return res.send({
                 status: 400,
                 error: err.message,
             })
@@ -92,4 +91,4 @@ const getstartduty = async(req, res) => {
 }
 
 
-module.exports = { createstartduty, postendduty,getstartduty }
+module.exports = { createstartduty, postendduty, getstartduty }
