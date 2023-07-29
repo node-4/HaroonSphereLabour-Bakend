@@ -62,11 +62,6 @@ const adminsignin = (req, res) => {
     const password = sha256(req.body.password);
     adminmodel.find({ emailid: emailid, password: password, usertype: "admin" }).then((result) => {
         if (result.length > 0) {
-            req.session.admindetails = {
-                adminid: result[0]._id,
-                adinmailid: result[0].emailid,
-            }
-            console.log(req.session.admindetails);
             return res.status(200).json({
                 StatusCode: 200,
                 Status: "seccess",
