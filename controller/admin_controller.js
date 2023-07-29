@@ -18,7 +18,7 @@ const adminsignup = (req, res) => {
     const usertype = "admin";
     adminmodel.find({ emailid: emailid, isdeleted: false }).then((resp) => {
         if (resp.length > 0) {
-            res.status(200).json({
+            return res.status(200).json({
                 StatusCode: 200,
                 Status: 'exsist',
                 data: {
@@ -67,7 +67,7 @@ const adminsignin = (req, res) => {
                 adinmailid: result[0].emailid,
             }
             console.log(req.session.admindetails);
-            res.status(200).json({
+            return res.status(200).json({
                 StatusCode: 200,
                 Status: "seccess",
                 data: {
@@ -78,55 +78,55 @@ const adminsignin = (req, res) => {
             })
 
         } else {
-            res.status(200).send('user not found');
+            return res.status(200).send('user not found');
         }
     })
 
 }
 
-const taskAssigntoLabour = async(req,res) => {
-    try{
-    if(!req.body.labourId){
-        return res.status(500).json({
-            message: "Labour Id require "
+const taskAssigntoLabour = async (req, res) => {
+    try {
+        if (!req.body.labourId) {
+            return res.status(500).json({
+                message: "Labour Id require "
+            })
+        }
+        const laborData = await labourmodel.findById({ _id: req.body.labourId })
+        const data = {
+            orderId: req.body.orderId,
+            labourId: req.body.labourId,
+            name: laborData.fullname,
+            desc: req.body.desc,
+            location: req.body.location,
+            patnerId: req.body.patnerId
+        }
+        const Data = await labourtask.create(data);
+        await labourByadmin.updateOne({ labourId: req.body.labourId }, {
+            status: "true"
+        }, { new: true })
+        return res.status(200).json({
+            details: Data
         })
-    }
-    const laborData = await labourmodel.findById({_id: req.body.labourId})
-    const data = {
-        orderId: req.body.orderId,
-        labourId: req.body.labourId,
-        name: laborData.fullname,
-        desc: req.body.desc, 
-        location: req.body.location,
-        patnerId: req.body.patnerId
-    }
-    const Data =  await labourtask.create(data);
-    await labourByadmin.updateOne({labourId: req.body.labourId}, {
-        status: "true"
-    }, {new: true})
-    res.status(200).json({
-        details: Data 
-    })
-    }catch(err){
-        res.status(400).json({
+    } catch (err) {
+        return res.status(400).json({
             message: err.message
         })
     }
 }
 
-const GetAllLabourTask = async(req,res) =>{
-    try{
+const GetAllLabourTask = async (req, res) => {
+    try {
         const data = await labourtask.find().populate('orderId')
-        if(data.length ===  0 ){
+        if (data.length === 0) {
             return res.status(500).json({
                 message: "No Data Found "
             })
         }
-        res.status(200).json({
+        return res.status(200).json({
             details: data
         })
-    }catch(err){
-        res.status(400).json({
+    } catch (err) {
+        return res.status(400).json({
             message: err.message
         })
     }
@@ -136,7 +136,7 @@ const GetAllLabourTask = async(req,res) =>{
 
 const admingetallcustomer = (req, res) => {
     customermodel.find({ isdeleted: false }).then((result) => {
-        const total = result.length 
+        const total = result.length
         const response = {
             StatusCode: 200,
             Status: 'sucess',
@@ -255,73 +255,73 @@ const admingetworkbyworkid = (req, res) => {
         })
 }
 
-const UpdateCuestomerStatus = async(req, res) => {
-    try{
-    if(!req.params.id){
-        return res.status(500).json({
-            message: "Work Id is require"
-        })
-    }else{
-     await customerworkmodel.findByIdAndUpdate({_id: req.params.id}, {
-        workstatus  : req.body.workstatus
-     })
-     res.status(200).json({
-        message: "Status Changes"
-     })
-    }
-    }catch(err){
-        res.status(400).json({
+const UpdateCuestomerStatus = async (req, res) => {
+    try {
+        if (!req.params.id) {
+            return res.status(500).json({
+                message: "Work Id is require"
+            })
+        } else {
+            await customerworkmodel.findByIdAndUpdate({ _id: req.params.id }, {
+                workstatus: req.body.workstatus
+            })
+            return res.status(200).json({
+                message: "Status Changes"
+            })
+        }
+    } catch (err) {
+        return res.status(400).json({
             message: err.message
         })
     }
 }
 
 
-const getAllPatnerIdAndLabourId = async(req,res) =>{
-    try{
-    const patnerId = await labourByadmin.find();
-    const cuestomerId = await customermodel.find();
-    res.status(200).json({
-        cuestomer : cuestomerId ,
-        patner : patnerId
-    })
-    }catch(err){
-        res.status(400).json({
+const getAllPatnerIdAndLabourId = async (req, res) => {
+    try {
+        const patnerId = await labourByadmin.find();
+        const cuestomerId = await customermodel.find();
+        return res.status(200).json({
+            cuestomer: cuestomerId,
+            patner: patnerId
+        })
+    } catch (err) {
+        return res.status(400).json({
             message: err.message
         })
     }
 }
 
 
-const getAllPatnerId = async(req,res) =>{
-    try{
-    const patnerId = await labourByadmin.find();
-    res.status(200).json({
-        patner : patnerId
-    })
-    }catch(err){
-        res.status(400).json({
+const getAllPatnerId = async (req, res) => {
+    try {
+        const patnerId = await labourByadmin.find();
+        return res.status(200).json({
+            patner: patnerId
+        })
+    } catch (err) {
+        return res.status(400).json({
             message: err.message
         })
     }
 }
 
 
-const AllActivePatner = async(req,res) => {
-    try{
-    const data = await labourByadmin.find({status: "true"})
-    res.status(200).json({
-      data: data
-    })
-    }catch(err){
+const AllActivePatner = async (req, res) => {
+    try {
+        const data = await labourByadmin.find({ status: "true" })
+        return res.status(200).json({
+            data: data
+        })
+    } catch (err) {
         console.log(err);
-        res.status(400).json({
+        return res.status(400).json({
             message: err.message
         })
     }
 }
 
-module.exports = { admingetallcustomer, admingetalllabour, admingetcustomerbyid, admingetlabourbyid, admingetallwork, admingetworkbyworkid, adminsignup ,adminsignin, GetAllLabourTask, taskAssigntoLabour, UpdateCuestomerStatus, getAllPatnerIdAndLabourId, AllActivePatner, getAllPatnerId}
+module.exports = { admingetallcustomer, admingetalllabour, admingetcustomerbyid, admingetlabourbyid, admingetallwork, admingetworkbyworkid, adminsignup, adminsignin, GetAllLabourTask, taskAssigntoLabour, UpdateCuestomerStatus, getAllPatnerIdAndLabourId, AllActivePatner, getAllPatnerId }
 
 
 
