@@ -3,67 +3,47 @@ const mongoose = require("mongoose");
 
 const customerschema = new mongoose.Schema({
     customerId: {
-        type: String, 
-        require: false
+        type: String,
     },
-    fullname:{
-        type:String,
-        required:false
-    }, 
-    shopname:{
-        type:String,
-        required:false
+    fullname: {
+        type: String,
     },
-    
-    livelocation:{
-        type:String,
-        required:false
+    shopname: {
+        type: String,
     },
-    emailid:{
-        type:String,
-        unique:true,
-        required:false
-    }, 
-    mobilenumber:{
-        type:String,
-       unique:true,
-        required:false
+
+    livelocation: {
+        type: String,
     },
-   
-    shopaddress:{
-       type:String,
-       require:false,
-       
+    emailid: {
+        type: String,
     },
-    gstnumber:{
-        type:String,
-        require:false,
-        
-     },
-   
-    
-    typeofshop:{
-        type:String,
-       require:false,
-       
+    mobilenumber: {
+        type: String,
     },
-    usertype:{
-        type:String,
-        require:false,
-       
+
+    shopaddress: {
+        type: String,
+
     },
-       
-    isdeleted:{
-          type:Boolean, 
-          required:true,
-          default:false
-    }, 
+    gstnumber: {
+        type: String,
+    },
+    typeofshop: {
+        type: String,
+    },
+    usertype: {
+        type: String,
+    },
+
+    isdeleted: {
+        type: Boolean,
+    },
     otp: {
-        type: String, 
-        required: true
+        type: String,
     }
 })
 
-const customermodel = new mongoose.model("Customer",customerschema);
+const customermodel = new mongoose.model("Customer", customerschema);
 
 module.exports = customermodel;

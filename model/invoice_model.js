@@ -9,31 +9,22 @@ const inVoice = mongoose.Schema({
     }, 
     name: {
         type: String, 
-        require: false, 
     }, 
     InNumber: {
         type: String, 
-        require: false
     }, 
     desc: {
         type: String, 
-        require: false
     }, 
     DOB: {
         type: String, 
-        require: false
     }, 
     address: {
         type: String, 
-        require: false
     }, 
     total: {
         type: String, 
-        require: false
     }
 })
-
-
 const invoice = mongoose.model('Invoice',inVoice );
-
 module.exports = invoice

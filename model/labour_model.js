@@ -8,7 +8,6 @@ const labourschema = new mongoose.Schema({
     }, 
     mobilenumber:{
         type:String,
-       unique:true,
         required:false
     },
    

@@ -9,7 +9,6 @@ const bannerSchema = new Schema(
     },
     link: {
       type: String,
-      trim: true,
     },
   },
   { timestamps: true }

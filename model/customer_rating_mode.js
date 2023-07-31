@@ -3,38 +3,21 @@ const mongoose = require("mongoose");
 
 
 const customerratingschema = new mongoose.Schema({
-    customerid:{
-        type:String,
-        require:true,
+    customerid: {
+        type: String,
     },
-    workid:{
-        type:String,
-        require:false,
+    workid: {
+        type: String,
     },
-    comment:{
-        type:String,
-       require:false,
-       
+    comment: {
+        type: String,
     },
-    rating:{
-        type:Number,
-       require:true,
-       
+    rating: {
+        type: Number,
     },
-       
-    isdeleted:{
-          type:Boolean, 
-          required:true,
-          default:false
-    }  
-
-   
-
-
-
+    isdeleted: {
+        type: Boolean,
+    }
 })
-
-
-const customerratingmodel = new mongoose.model("customerrating",customerratingschema);
-
+const customerratingmodel = new mongoose.model("customerrating", customerratingschema);
 module.exports = customerratingmodel;

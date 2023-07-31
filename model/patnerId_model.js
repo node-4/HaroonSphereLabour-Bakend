@@ -8,7 +8,6 @@ const CreatepartnerID = mongoose.Schema({
     partnerId : {
         type: String,
         require: false,
-        unique: false
     }, 
     Name: {
         type: String, 
