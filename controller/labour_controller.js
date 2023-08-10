@@ -222,22 +222,10 @@ const laboursignin = (req, res) => {
     labourmodel.find({ mobilenumber: mobilenumber })
         .then((labour) => {
             if (labour.length > 0) {
-                req.session.labourdetails = {
-                    labourid: labour[0]._id,
-                    labourfullname: labour[0].fullname,
-                    labourmobilenumber: labour[0].mobilenumber,
-                    labouraddresstype: labour[0].addresstype,
-                    labourtypesofwork: labour[0].typesofwork
-                }
-                console.log(req.session.labourdetails);
+
                 return res.status(200).json({
                     StatusCode: 200,
-                    Status: 'success',
-                    data: {
-                        message: ' login  successfully',
-                        status: ' Log in success',
-                        labourdetails: labour,
-                    }
+                    Status: 'success', data: { message: ' login  successfully', status: ' Log in success', labourdetails: labour, }
                 })
             }
             else {
