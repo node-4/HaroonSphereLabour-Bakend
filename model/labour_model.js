@@ -2,72 +2,61 @@ const mongoose = require("mongoose");
 
 
 const labourschema = new mongoose.Schema({
-    fullname:{
-        type:String,
-        required:false
-    }, 
-    mobilenumber:{
-        type:String,
-        required:false
+    fullname: {
+        type: String,
     },
-   
-    addresstype:{
-        type:String,
-       require:false,
-       
+    mobilenumber: {
+        type: String,
     },
-    typesofwork:{
-        type:String,
-       require:false,
-       
+
+    addresstype: {
+        type: String,
+    },
+    typesofwork: {
+        type: String,
+
     },
     location: {
         longitude: {
-          type: Number,
-          default: 28.6198779
+            type: Number,
+            default: 28.6198779
         },
         latitude: {
-          type: Number,
-          default: 77.3806905
+            type: Number,
+            default: 77.3806905
         },
-      },
-    password:{
-        type:String,
-       require:false,
-       
     },
-    usertype:{
-        type:String,
-       require:false,
-       
+    password: {
+        type: String,
+
     },
-    earnings:[],
-    earningammount:{
-        type:Number,
-       require:false,
-       
+    usertype: {
+        type: String,
+
     },
-       
-    isdeleted:{
-          type:Boolean, 
-          required:true,
-          default:false
-    }, 
+    earnings: [],
+    earningammount: {
+        type: Number,
+
+    },
+
+    isdeleted: {
+        type: Boolean,
+        default: false
+    },
     otp: {
-        type: String, 
-        required: true
-    } ,
+        type: String,
+    },
     patnerId: {
-     type: String, 
-     require: false
+        type: String,
     },
     orderId: {
-        type: mongoose.Schema.Types.ObjectId, 
+        type: mongoose.Schema.Types.ObjectId,
         ref: "order"
     }
 })
 
 
-const labourmodel = new mongoose.model("labour",labourschema);
+const labourmodel = new mongoose.model("labour", labourschema);
 
 module.exports = labourmodel;

@@ -19,14 +19,7 @@ const laboursignup = (req, res) => {
     const usertype = "labour";
     labourmodel.find({ mobilenumber: mobilenumber, isdeleted: false }).then((resp) => {
         if (resp.length > 0) {
-            return res.status(200).json({
-                StatusCode: 200,
-                Status: 'exsist',
-                data: {
-                    message: 'In this mobile no. Labour already exsist',
-                    status: 'exsist'
-                }
-            })
+            return res.status(200).json({ StatusCode: 200, Status: 'exsist', data: { message: 'In this mobile no. Labour already exsist', status: 'exsist' } })
         }
         else {
             const labour = new labourmodel({
