@@ -70,8 +70,10 @@ const sendOtp = async (req, res) => {
         const mobile = req.body.mobile
         const labourData = await labourmodel.findOne({ mobilenumber: mobile });
         if (labourData) {
+            const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChar: false });
+            let update = await labourmodel.findByIdAndUpdate({ _id: labourData._id }, { $set: { otp: otp } }, { new: true })
             return res.status(201).json({
-                details: labourData.otp
+                details: update.otp
             })
         } else {
             const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChar: false });
