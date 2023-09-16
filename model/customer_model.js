@@ -35,13 +35,19 @@ const customerschema = new mongoose.Schema({
     usertype: {
         type: String,
     },
-
     isdeleted: {
         type: Boolean,
     },
     otp: {
         type: String,
-    }
+    },
+    otpExpiration: {
+        type: Date,
+    },
+    verified: {
+        type: Boolean,
+        default: false
+    },
 })
 
 const customermodel = new mongoose.model("Customer", customerschema);

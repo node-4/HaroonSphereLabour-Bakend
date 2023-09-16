@@ -21,30 +21,11 @@ const customersigninupbymobilenumber = (req, res) => {
                 }
             })
         } else {
-            const customer = new customermodel({
-
-                mobilenumber: mobilenumber,
-                usertype: usertype,
-                emailid: emailid
-
-            });
+            const customer = new customermodel({ mobilenumber: mobilenumber, usertype: usertype, emailid: emailid });
             customer.save().then((result) => {
-                const response = {
-                    StatusCode: 200,
-                    Status: 'sucess',
-                    message: 'customer mobileno. reg sucessfully',
-                    user: result,
-                }
+                const response = { StatusCode: 200, Status: 'sucess', message: 'customer mobileno. reg sucessfully', user: result, }
                 return res.send(response)
-            })
-                .catch((err) => {
-                    console.log(err)
-                    return res.send({
-                        status: 400,
-                        error: err.message,
-                    })
-                })
-
+            }).catch((err) => { console.log(err); return res.send({ status: 400, error: err.message, }) })
         }
 
     })
@@ -119,14 +100,27 @@ const sendOtp = async (req, res) => {
         const mobile = req.body.mobile
         const labourData = await customermodel.findOne({ mobilenumber: mobile });
         if (labourData) {
-            return res.status(201).json({
-                details: labourData.otp
-            })
-        } else {
+            const otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
+            const verified = false;
             const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChar: false });
-
-            const data = await customermodel.create({ mobilenumber: mobile, otp: otp });
-            return res.status(200).json({ message: data })
+            const data = await customermodel.findByIdAndUpdate({ _id: labourData._id }, { $set: { otp: otp, otpExpiration: otpExpiration, verified: verified } }, { new: true });
+            let details = {
+                userId: data._id,
+                mobilenumber: data.mobilenumber,
+                otp: data.otp
+            }
+            return res.status(200).json({ details: details })
+        } else {
+            const otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
+            const verified = false;
+            const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChar: false });
+            const data = await customermodel.create({ mobilenumber: mobile, otp: otp, otpExpiration: otpExpiration, verified: verified });
+            let details = {
+                userId: data._id,
+                mobilenumber: data.mobilenumber,
+                otp: data.otp
+            }
+            return res.status(200).json({ details: details })
         }
     } catch (err) {
         return res.status(400).json({
@@ -138,13 +132,17 @@ const sendOtp = async (req, res) => {
 
 const verifyOtp = async (req, res) => {
     try {
-        const otp = req.body.otp;
-        const data = await customermodel.findOne({ otp: otp });
-        if (!data) {
-            return res.status(500).json({ message: "Otp Wrong " })
-        } else {
-            return res.status(200).json({ message: "Login Done ", ID: data._id })
+        const { otp } = req.body;
+        const user = await customermodel.findById({ _id: req.params.id });
+        if (!user) {
+            return res.status(404).send({ message: "user not found" });
         }
+        if (user.otp !== otp || user.otpExpiration < Date.now()) {
+            return res.status(400).json({ message: "Invalid OTP" });
+        }
+        const updated = await customermodel.findByIdAndUpdate({ _id: user._id }, { $set: { verified: true } }, { new: true });
+        let obj = { id: updated._id }
+        return res.status(200).send({ status: 200, message: "logged in successfully", data: obj });
     } catch (err) {
         return res.status(400).json({
             message: err.message
