@@ -259,39 +259,37 @@ const getlabourprofilebyid = (req, res) => {
 }
 
 
-const updatelabourdetails = (req, res) => {
-    const labourid = req.params._id;
-    const fullname = req.body.fullname;
-    const mobilenumber = req.body.mobilenumber;
-    const addresstype = req.body.addresstype;
-    const typesofwork = req.body.typesofwork;
-    const password = sha256(req.body.password);
-    labourmodel.findById(labourid).then(result => {
-        if (!result) {
-            return res.status(500).json({
-                message: "No User Found"
-            })
+const updatelabourdetails = async (req, res) => {
+    try {
+        const labourid = req.params._id;
+        const { fullname, mobilenumber, addresstype, typesofwork, password } = req.body;
+        let findCustomer = await labourmodel.findById(labourid);
+        if (findCustomer) {
+            let image;
+            if (req.file) {
+                image = req.file.path;
+            } else {
+                image = findCustomer.image
+            }
+            let data = {
+                fullname: fullname || findCustomer.fullname,
+                mobilenumber: mobilenumber || findCustomer.mobilenumber,
+                addresstype: addresstype || findCustomer.addresstype,
+                typesofwork: typesofwork || findCustomer.typesofwork,
+                password: password || findCustomer.password,
+                image: image,
+            }
+            let update = await labourmodel.findByIdAndUpdate({ _id: findCustomer._id }, { $set: data }, { new: true });
+            if (update) {
+                return res.send({ status: 200, message: "Update.", data: update })
+            }
         } else {
-            result.fullname = fullname;
-            result.mobilenumber = result.mobilenumber
-            result.addresstype = addresstype;
-            result.typesofwork = typesofwork;
-            result.password = password
-            return result.save().then((data) => {
-                return res.status(200).json({
-                    StatusCode: 200,
-                    Status: 'success',
-
-                    message: 'labour update successfully',
-                    status: 'success',
-                    labour: data,
-
-                })
-            })
+            return res.send({ status: 404, message: "user not found." })
         }
-    })
 
-
+    } catch (error) {
+        return res.send({ status: 500, error: error.message, })
+    }
 }
 
 

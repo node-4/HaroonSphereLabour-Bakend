@@ -11,7 +11,6 @@ const customerschema = new mongoose.Schema({
     shopname: {
         type: String,
     },
-
     livelocation: {
         type: String,
     },
@@ -21,10 +20,11 @@ const customerschema = new mongoose.Schema({
     mobilenumber: {
         type: String,
     },
-
     shopaddress: {
         type: String,
-
+    },
+    image: {
+        type: String,
     },
     gstnumber: {
         type: String,

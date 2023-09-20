@@ -1,6 +1,4 @@
 const contact = require('../model/contact_us');
-
-
 exports.addcontact = async (req, res) => {
     try {
         const data = {
@@ -18,8 +16,6 @@ exports.addcontact = async (req, res) => {
         return res.status(400).send({ message: err.message })
     }
 }
-
-
 exports.getContact = async (req, res) => {
     try {
         const data = await contact.find();
@@ -32,16 +28,11 @@ exports.getContact = async (req, res) => {
             }
             return out;
         })
-        return res.status(200).json({
-            contact: data[0]
-        })
-
+        return res.status(200).json({ status: 200, data: data[0] })
     } catch (err) {
         return res.status(400).send({ mesage: err.mesage });
     }
 }
-
-
 exports.updatecontact = async (req, res) => {
     try {
 
@@ -63,8 +54,6 @@ exports.updatecontact = async (req, res) => {
         })
     }
 }
-
-
 exports.DeleteContact = async (req, res) => {
     try {
         const id = req.params.id;

@@ -19,11 +19,7 @@ exports.addPrivacy = async (req, res) => {
 exports.getPrivacy = async (req, res) => {
     try {
         const data = await policy.find();
-        console.log(data[0].privacy)
-        return res.status(200).json({
-            privacy: data[0]
-        })
-
+        return res.status(200).json({ status: 200, data: data[0] })
     } catch (err) {
         return res.status(400).send({ mesage: err.mesage });
     }

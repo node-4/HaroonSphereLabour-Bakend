@@ -1,4 +1,4 @@
-const express = require('express'); 
+const express = require('express');
 const terms = require('../controller/terms_controllers');
 
 
@@ -6,10 +6,10 @@ const router = express();
 
 
 
-router.post('/terms', [  terms.addterms]);
-router.get('/terms', [  terms.getterms]);
-router.put('/terms/:id',[ terms.updateterms]);
-router.delete('/terms/:id',[  terms.DeleteTerms]);
+router.post('/terms', [terms.addterms]);
+router.get('/terms', [terms.getterms]);
+router.put('/terms/:id', [terms.updateterms]);
+router.delete('/terms/:id', [terms.DeleteTerms]);
 
 
 //labour 
@@ -18,4 +18,11 @@ router.get('/lanour_terms', terms.getterms_labour);
 router.put('/lanour_terms/:id', terms.updateterms_labour);
 router.delete('/lanour_terms/:id', terms.DeleteTerms_labour)
 
+
+
+
+router.post('/helpAndsupports', [terms.addhelpAndsupports]);
+router.get('/helpAndsupports', [terms.gethelpAndsupports]);
+router.put('/helpAndsupports/:id', [terms.updatehelpAndsupports]);
+router.delete('/helpAndsupports/:id', [terms.DeletehelpAndsupports]);
 module.exports = router;

@@ -128,8 +128,6 @@ const sendOtp = async (req, res) => {
         })
     }
 }
-
-
 const verifyOtp = async (req, res) => {
     try {
         const { otp } = req.body;
@@ -149,7 +147,6 @@ const verifyOtp = async (req, res) => {
         })
     }
 }
-
 const customersignin = (req, res) => {
     const mobilenumber = req.body.mobilenumber;
     const password = req.body.password;
@@ -188,8 +185,6 @@ const customersignin = (req, res) => {
         })
 
 }
-
-
 const customerprofilegetbyid = (req, res) => {
     const customerid = req.params._id;
 
@@ -210,57 +205,40 @@ const customerprofilegetbyid = (req, res) => {
             })
         })
 }
-
-
-const updatecustomerdetails = (req, res) => {
-    const customerid = req.params._id;
-    const fullname = req.body.fullname;
-    const shopname = req.body.shopname;
-    const livelocation = req.body.livelocation;
-    const emailid = req.body.emailid;
-    const typeofshop = req.body.typeofshop;
-    const shopaddress = req.body.shopaddress;
-    const gstnumber = req.body.gstnumber;
-    const password = req.body.password;
-
-    customermodel.findById(customerid).then(result => {
-        // if(result.length == 0){
-        //     return res.status(500).json({
-        //         message: "UserId is Invalid "
-        //     })
-        // }else{
-        result.fullname = fullname;
-        result.shopaddress = shopaddress;
-        result.shopname = shopname;
-        result.livelocation = livelocation;
-        result.emailid = emailid;
-        result.typeofshop = typeofshop;
-        result.gstnumber = gstnumber;
-        result.password = password
-        return result.save().then((result) => {
-
-            const response = {
-                StatusCode: 200,
-                Status: 'sucess',
-                message: 'customer mobileno. reg sucessfully',
-                user: result,
+const updatecustomerdetails = async (req, res) => {
+    try {
+        const customerid = req.params._id;
+        const { fullname, shopname, livelocation, emailid, typeofshop, shopaddress, gstnumber } = req.body;
+        let findCustomer = await customermodel.findById(customerid);
+        if (findCustomer) {
+            let image;
+            if (req.file) {
+                image = req.file.path;
+            } else {
+                image = findCustomer.image
             }
-            return res.send(response)
-        })
-            .catch((err) => {
-                console.log(err)
-                return res.send({
-                    status: 400,
-                    error: err.message,
-                })
-            })
+            let data = {
+                fullname: fullname || findCustomer.fullname,
+                shopname: shopname || findCustomer.shopname,
+                livelocation: livelocation || findCustomer.livelocation,
+                emailid: emailid || findCustomer.emailid,
+                typeofshop: typeofshop || findCustomer.typeofshop,
+                shopaddress: shopaddress || findCustomer.shopaddress,
+                gstnumber: gstnumber || findCustomer.gstnumber,
+                image: image,
+            }
+            let update = await customermodel.findByIdAndUpdate({ _id: findCustomer._id }, { $set: data }, { new: true });
+            if (update) {
+                return res.send({ status: 200, message: "Update.", data: update })
+            }
+        } else {
+            return res.send({ status: 404, message: "user not found." })
+        }
 
-    })
-
-
-
+    } catch (error) {
+        return res.send({ status: 500, error: error.message, })
+    }
 }
-
 const customerlogout = async (req, res) => {
     try {
         req.session.destroy();
@@ -279,7 +257,6 @@ const customerlogout = async (req, res) => {
     }
 
 }
-
 const DeleCuestomer = async (req, res) => {
     try {
         await customermodel.findByIdAndDelete({ _id: req.params.id })
@@ -292,7 +269,6 @@ const DeleCuestomer = async (req, res) => {
         })
     }
 }
-
 const AddCuestomerId = async (req, res) => {
     try {
         await customermodel.findByIdAndUpdate({ _id: req.params.id }, {
@@ -307,12 +283,4 @@ const AddCuestomerId = async (req, res) => {
         })
     }
 }
-
-
-
-
-
-
-
-
 module.exports = { customersigninupbymobilenumber, customersignin, customerprofilegetbyid, updatecustomerdetails, customerlogout, sendOtp, verifyOtp, DeleCuestomer, AddCuestomerId }
