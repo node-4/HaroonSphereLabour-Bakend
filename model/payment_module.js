@@ -7,25 +7,22 @@ const paymentSchema = mongoose.Schema({
     },
     orderId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "order"
+        ref: "Customerwork"
     },
     payment_Id: {
         type: String,
     },
     amount: {
         type: Number,
-        required: true
     },
     invoice: {
         type: String
     },
     status: {
-        type: Boolean,
-        default: false
+        type: String,
     },
     receipt: {
         type: String,
-        required: true
     },
     amount_paid: {
         type: Number,
@@ -33,7 +30,6 @@ const paymentSchema = mongoose.Schema({
     },
     name: {
         type: String,
-        required: true
     },
     type: {
         type: String,

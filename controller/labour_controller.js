@@ -6,8 +6,7 @@ const labourtask = require('../model/labour_task');
 const labourByadmin = require('../model/patnerId_model');
 const helpandSupport = require("../model/help_support");
 
-
-
+const customerworkmodel = require('../model/customer_work_model')
 
 const laboursignup = (req, res) => {
     const fullname = req.body.fullname;
@@ -64,7 +63,6 @@ const laboursignup = (req, res) => {
 
 
 };
-
 const sendOtp = async (req, res) => {
     try {
 
@@ -89,7 +87,6 @@ const sendOtp = async (req, res) => {
         })
     }
 }
-
 const verifyOtp = async (req, res) => {
     try {
         const otp = req.body.otp;
@@ -105,8 +102,6 @@ const verifyOtp = async (req, res) => {
         })
     }
 }
-
-
 const createearnings = (req, res) => {
     const labourid = req.params._id;
 
@@ -140,7 +135,6 @@ const createearnings = (req, res) => {
     });
 
 }
-
 const getlastsevendaysearnings = (req, res) => {
 
     const _id = req.params._id;
@@ -176,7 +170,6 @@ const getlastsevendaysearnings = (req, res) => {
 
 
 }
-
 const gettodaysearnings = (req, res) => {
 
     var now = Date.now(),
@@ -217,7 +210,6 @@ const gettodaysearnings = (req, res) => {
 
 
 }
-
 const laboursignin = (req, res) => {
     const mobilenumber = req.body.mobilenumber;
     const password = req.body.password;
@@ -237,7 +229,6 @@ const laboursignin = (req, res) => {
         })
 
 }
-
 const getlabourprofilebyid = (req, res) => {
     const labourid = req.params._id;
 
@@ -258,8 +249,6 @@ const getlabourprofilebyid = (req, res) => {
             })
         })
 }
-
-
 const updatelabourdetails = async (req, res) => {
     try {
         const labourid = req.params._id;
@@ -292,8 +281,6 @@ const updatelabourdetails = async (req, res) => {
         return res.send({ status: 500, error: error.message, })
     }
 }
-
-
 const labourlogout = async (req, res) => {
     try {
         req.session.destroy();
@@ -309,17 +296,10 @@ const labourlogout = async (req, res) => {
     }
 
 }
-
-
 const labourgetallwork = (req, res) => {
 
-    customerworkmodel.find({ workstatus: 'pending', isdeleted: false }).then((result) => {
-        const response = {
-            StatusCode: 200,
-            Status: 'sucess',
-            message: 'labour get all work successfully.',
-            allwork: result,
-        }
+    customerworkmodel.find({ workstatus: 'pending', }).then((result) => {
+        const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: result, }
         return res.send(response)
     })
         .catch((err) => {
@@ -331,8 +311,6 @@ const labourgetallwork = (req, res) => {
         })
 
 }
-
-
 const labourgetworkbyworkid = (req, res) => {
     const _id = req.params._id;
     customerworkmodel.find({ _id: _id, workstatus: 'pending', isdeleted: false }).then((result) => {
@@ -352,8 +330,6 @@ const labourgetworkbyworkid = (req, res) => {
             })
         })
 }
-
-
 const acceptworkbylabour = (req, res) => {
     const workid = req.params._id;
     const labourid = req.body.labourid
@@ -366,28 +342,16 @@ const acceptworkbylabour = (req, res) => {
             })
         } else {
             result.workstatus = workstatus;
+            result.labourid = labourid;
             let status = [];
             status = result.status;
-            status.push({
-                labourid: labourid,
-                workstatus: "Accepted",
-                accepteddateandtime: d.toLocaleString()
-            })
+            status.push({ labourid: labourid, workstatus: "Accepted", accepteddateandtime: d.toLocaleString() })
             return result.save().then((data) => {
-                return res.status(200).json({
-                    StatusCode: 200,
-                    Status: 'success',
-
-                    message: 'Reject Work by labour',
-                    status: 'success',
-                    work: data,
-
-                })
+                return res.status(200).json({ StatusCode: 200, Status: 'success', message: 'Accepted Work by labour', status: 'success', work: data, })
             })
         }
     })
 }
-
 const rejectworkbylabour = (req, res) => {
     const labourid = req.body.labourid
     const d = new Date();
@@ -409,17 +373,14 @@ const rejectworkbylabour = (req, res) => {
                 return res.status(200).json({
                     StatusCode: 200,
                     Status: 'success',
-
                     message: 'Reject Work by labour',
                     status: 'success',
                     work: data,
-
                 })
             })
         }
     })
 }
-
 //labou get extended work by work id
 const labourgetextendwork = (req, res) => {
     const _id = req.params._id;
@@ -441,8 +402,6 @@ const labourgetextendwork = (req, res) => {
         })
 
 }
-
-
 const labourgetallextendedwork = (req, res) => {
     customerworkmodel.find({ isextended: true, isdeleted: false }).then((result) => {
         const response = {
@@ -461,7 +420,6 @@ const labourgetallextendedwork = (req, res) => {
             })
         })
 }
-
 const labouracceptextendedwork = (req, res) => {
     const labourid = req.body.labourid;
     const d = new Date();
@@ -495,7 +453,6 @@ const labouracceptextendedwork = (req, res) => {
         }
     });
 }
-
 const labourrejectextendedwork = (req, res) => {
     const labourid = req.body.labourid;
     const d = new Date();
@@ -523,8 +480,6 @@ const labourrejectextendedwork = (req, res) => {
         });
     });
 };
-
-
 const DeleteLabor = async (req, res) => {
     try {
         await labourmodel.findByIdAndDelete({ _id: req.params.id })
@@ -537,7 +492,6 @@ const DeleteLabor = async (req, res) => {
         })
     }
 }
-
 const labourOrderByLabourID = async (req, res) => {
     try {
         // const patnerId = await labourByadmin.findOne({labourId: req.params.id});
@@ -557,26 +511,14 @@ const labourOrderByLabourID = async (req, res) => {
         })
     }
 }
-
 const updateLabourLocation = async (req, res) => {
     try {
-        await labourmodel.findOneAndUpdate({ _id: req.params.id }, {
-            location: {
-                longitude: parseFloat(req.body.longitude),
-                latitude: parseFloat(req.body.latitude)
-            }
-        })
-        return res.status(200).json({
-            message: "Location Updated "
-        })
+        await labourmodel.findOneAndUpdate({ _id: req.params.id }, { location: { longitude: parseFloat(req.body.longitude), latitude: parseFloat(req.body.latitude) } })
+        return res.status(200).json({ message: "Location Updated " })
     } catch (err) {
-        return res.status(400).json({
-            message: err.message
-        })
+        return res.status(400).json({ message: err.message })
     }
 }
-
-
 const getByPatnerId = async (req, res) => {
     try {
         console.log(req.params.patnerId)
@@ -602,7 +544,6 @@ const getByPatnerId = async (req, res) => {
         })
     }
 }
-
 const addQuery = async (req, res) => {
     try {
         req.body.labourId = req.body.labourid;

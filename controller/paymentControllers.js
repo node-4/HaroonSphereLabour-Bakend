@@ -5,6 +5,7 @@ const uuid = require('uuid')
 const id = uuid.v4();
 const payment = require('../model/payment_module');
 const order = require('../model/order_model');
+const customerworkmodel = require('../model/customer_work_model')
 
 
 const Razorpay = new razerpay({
@@ -46,20 +47,18 @@ const Razorpay = new razerpay({
 
 exports.CreatePaymentOrder = async (req, res) => {
     try {
-        const data = await order.findById({ _id: req.params.orderId });
+        const data = await customerworkmodel.findById({ _id: req.params.orderId });
         if (!data) {
             return res.status(401).json({ message: "This Order Palced  this Order Id  " })
         } else {
-            let obj = {
-                userId: data.cuestomerId,
-                orderId: data._id,
-                amount: data.amount,
-                orderStatus: "Ordered",
-                paymentMethod: req.body.paymentMethod,
-                type: "given"
-            }
+            let obj = { userId: data.cuestomerId, orderId: data._id, amount: data.amount, orderStatus: "Ordered", status: req.body.paymentstatus, paymentMethod: req.body.paymentMethod, type: "given" }
             const OrderPlaced = await payment.create(obj);
-            return res.status(200).json({ message: "Your Order Placed ", details: OrderPlaced, sucess: true })
+            if (OrderPlaced) {
+                const data = await customerworkmodel.findByIdAndUpdate({ _id: data._id }, { $set: { paymentstatus: req.body.paymentstatus } }, { new: true });
+                if (data) {
+                    return res.status(200).json({ message: "Your Order Placed ", details: OrderPlaced, sucess: true })
+                }
+            }
         }
     } catch (err) {
         console.log(err);

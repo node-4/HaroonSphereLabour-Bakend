@@ -3,16 +3,25 @@ const mongoose = require("mongoose");
 
 
 const customeworkrschema = new mongoose.Schema({
-
     customerid: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Customer",
+        required: true
+    },
+    labourid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "labour",
+        required: true
     },
     shopname: {
         type: String,
     },
     address: {
         type: String,
-
+    },
+    otp: {
+        type: String,
+        require: true,
     },
     noofhours: {
         type: Number,
@@ -48,7 +57,7 @@ const customeworkrschema = new mongoose.Schema({
     extendworkpaymentstatus: {
         type: String,
     },
-    amount: {
+    extendworkAmount: {
         type: Number
     },
     status: [],
@@ -72,7 +81,17 @@ const customeworkrschema = new mongoose.Schema({
         type: String,
         type: String,
         default: 'Start Work'
-    }
+    },
+    location: {
+        long: {
+            type: Number,
+            default: 28.6198779
+        },
+        lat: {
+            type: Number,
+            default: 77.3806905
+        },
+    },
 })
 const customerworkmodel = new mongoose.model("Customerwork", customeworkrschema);
 
