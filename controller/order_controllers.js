@@ -7,7 +7,7 @@ exports.placedOrder = async (req, res) => {
     try {
         if (!req.params.cuestomerId) {
             return res.status(401).json({
-                message: "Cuestomer ID is Required to Palce  Order "
+                message: "Customer ID is Required to Palce  Order "
             })
         } else {
             const Data = await cuestomer.findById({ _id: req.params.cuestomerId });
@@ -17,9 +17,11 @@ exports.placedOrder = async (req, res) => {
                 })
             } else {
                 const otp = otpGenerator.generate(6, { alphabets: false, upperCase: false, specialChar: false });
-
+                let location = {
+                    long: req.body.long,
+                    lat: req.body.lat,
+                }
                 const data = {
-
                     cuestomerId: req.params.cuestomerId,
                     shopName: req.body.shopName,
                     address: req.body.address,
@@ -28,21 +30,16 @@ exports.placedOrder = async (req, res) => {
                     NoWorker: parseInt(req.body.NumberofWorker),
                     time: req.body.time,
                     desc: req.body.desc,
-                    phone: parseInt(Data.mobilenumber)
+                    phone: parseInt(Data.mobilenumber),
+                    location: location,
+                    amount: req.body.amount
                 }
                 const OrderPlaced = await order.create(data);
-                return res.status(200).json({
-                    message: "Your Order Placed ",
-                    details: OrderPlaced,
-                    sucess: true
-                })
+                return res.status(200).json({ message: "Your Order Placed ", details: OrderPlaced, sucess: true })
             }
         }
     } catch (err) {
-        return res.status(400).json({
-            message: err.message,
-            sucess: false
-        })
+        return res.status(400).json({ message: err.message, sucess: false })
     }
 }
 
@@ -59,10 +56,7 @@ exports.UpdateplacedOrder = async (req, res) => {
             time: req.body.time,
             desc: req.body.desc
         });
-        return res.status(200).json({
-            message: "Your Order Updated ",
-            sucess: true
-        })
+        return res.status(200).json({ message: "Your Order Updated ", sucess: true })
     } catch (err) {
         return res.status(400).json({
             message: err.message,

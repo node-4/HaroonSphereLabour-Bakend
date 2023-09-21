@@ -1,16 +1,16 @@
 
 const express = require('express');
-const  payment = require('../controller/paymentControllers')
+const payment = require('../controller/paymentControllers')
 const labourPayment = require('../controller/labourpayment_controllers')
 
 
 const router = express();
 
 
-router.post('/payment', payment.CreatePaymentOrder);
-router.get('/payment',payment.getAllPayments );
+router.post('/payment/:orderId', payment.CreatePaymentOrder);
+router.get('/payment', payment.getAllPayments);
 router.get('/payment/:id', payment.GetPaymentsById)
-router.get('/payment/patnerId/:id',payment.getPaymentPaypatnerId)
+router.get('/payment/patnerId/:id', payment.getPaymentPaypatnerId)
 //Labour controllers 
 router.post('/labour/payment/create', labourPayment.CreatePaymentOrder)
 router.get('/labour/payment', labourPayment.getAllPayments);

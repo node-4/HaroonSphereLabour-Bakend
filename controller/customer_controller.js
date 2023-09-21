@@ -4,8 +4,6 @@ const sha256 = require('sha256');
 const otpGenerator = require('otp-generators')
 const helpandSupport = require("../model/help_support");
 
-
-
 const customersigninupbymobilenumber = (req, res) => {
     const mobilenumber = req.body.mobilenumber;
     const usertype = "customer";
@@ -33,10 +31,6 @@ const customersigninupbymobilenumber = (req, res) => {
 
 
 }
-
-
-
-
 // const customersignup = (req, res) => {
 //     const fullname = req.body.fullname;
 //     const shopname = req.body.shopname;
@@ -95,7 +89,6 @@ const customersigninupbymobilenumber = (req, res) => {
 
 
 // }
-
 const sendOtp = async (req, res) => {
     try {
         const mobile = req.body.mobile
@@ -284,7 +277,6 @@ const AddCuestomerId = async (req, res) => {
         })
     }
 }
-
 const addQuery = async (req, res) => {
     try {
         req.body.customerId = req.body.customerId;
