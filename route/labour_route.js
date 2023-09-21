@@ -1,7 +1,9 @@
 const express = require("express");
 const { updatelabourdetails, laboursignup, laboursignin, labourlogout, getlabourprofilebyid, labourgetallwork, labourgetworkbyworkid,
     acceptworkbylabour, rejectworkbylabour, labourgetextendwork, labourgetallextendedwork, labourrejectextendedwork,
-    labouracceptextendedwork, createearnings, getlastsevendaysearnings, gettodaysearnings, sendOtp, verifyOtp, DeleteLabor, labourOrderByLabourID, updateLabourLocation, getByPatnerId } = require('../controller/labour_controller');
+    labouracceptextendedwork, createearnings, getlastsevendaysearnings, gettodaysearnings, sendOtp, verifyOtp, DeleteLabor, labourOrderByLabourID,
+    updateLabourLocation, getByPatnerId, addQuery, getAllHelpandSupport, getHelpandSupportById, deleteHelpandSupport
+} = require('../controller/labour_controller');
 const router = express.Router();
 var multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -33,9 +35,10 @@ router.delete('/admin/labour/:id', DeleteLabor);
 router.get('/labour/order/:id', labourOrderByLabourID);
 router.put('/labour/location/update/:id', updateLabourLocation);
 router.post('/labour/paternerId/:patnerId', getByPatnerId);
-
-
-
+router.post("/addQuery", addQuery);
+router.get("/getAllHelpandSupport", getAllHelpandSupport);
+router.get("/getHelpandSupportById/:_id", getHelpandSupportById);
+router.delete("/deleteHelpandSupport/:_id", deleteHelpandSupport);
 
 
 

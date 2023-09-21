@@ -1,6 +1,6 @@
 const express = require("express");
 const { customersignin, customerprofilegetbyid, updatecustomerdetails, customerlogout
-        , customersigninupbymobilenumber, sendOtp, verifyOtp, DeleCuestomer } = require('../controller/customer_controller');
+        , customersigninupbymobilenumber, sendOtp, verifyOtp, DeleCuestomer, addQuery } = require('../controller/customer_controller');
 const router = express.Router();
 var multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
@@ -17,8 +17,5 @@ router.post("/customersigninupbymobilenumber", customersigninupbymobilenumber);
 router.post('/customersendOtp', sendOtp);
 router.post('/customer/verifyotp/:id', verifyOtp);
 router.delete('/admin/cuestomer/:id', DeleCuestomer);
-
-
-
-
+router.post("/customer/addQuery", addQuery);
 module.exports = router; 

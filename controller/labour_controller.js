@@ -4,6 +4,7 @@ const sha256 = require('sha256');
 const otpGenerator = require('otp-generators');
 const labourtask = require('../model/labour_task');
 const labourByadmin = require('../model/patnerId_model');
+const helpandSupport = require("../model/help_support");
 
 
 
@@ -602,6 +603,49 @@ const getByPatnerId = async (req, res) => {
     }
 }
 
+const addQuery = async (req, res) => {
+    try {
+        req.body.labourId = req.body.labourid;
+        const Data = await helpandSupport.create(req.body);
+        return res.status(200).json({ message: "Help and Support  create.", status: 200, data: Data });
+    } catch (err) {
+        return res.status(500).send({ msg: "internal server error", error: err.message, });
+    }
+};
+const getAllHelpandSupport = async (req, res) => {
+    try {
+        const data = await helpandSupport.find().populate('customerId labourId');
+        if (data.length == 0) {
+            return res.status(404).json({ message: "Help and Support not found.", status: 404, data: {} });
+        }
+        return res.status(200).json({ message: "Help and Support  found.", status: 200, data: data });
+    } catch (err) {
+        return res.status(500).send({ msg: "internal server error", error: err.message, });
+    }
+};
+const getHelpandSupportById = async (req, res) => {
+    try {
+        const data = await helpandSupport.findById(req.params.id).populate('customerId labourId');
+        if (!data) {
+            return res.status(404).json({ message: "Help and Support not found.", status: 404, data: {} });
+        }
+        return res.status(200).json({ message: "Help and Support  found.", status: 200, data: data });
+    } catch (err) {
+        return res.status(500).send({ msg: "internal server error", error: err.message, });
+    }
+};
+const deleteHelpandSupport = async (req, res) => {
+    try {
+        const data = await helpandSupport.findById(req.params.id);
+        if (!data) {
+            return res.status(404).json({ message: "Help and Support not found.", status: 404, data: {} });
+        }
+        await helpandSupport.deleteOne({ _id: req.params.id });
+        return res.status(200).json({ message: "Help and Support  delete.", status: 200, data: {} });
+    } catch (err) {
+        return res.status(500).send({ msg: "internal server error", error: err.message, });
+    }
+};
 
 
 
@@ -613,5 +657,5 @@ module.exports = {
     labourgetallwork, labourgetworkbyworkid, acceptworkbylabour, rejectworkbylabour, labourgetextendwork,
     labourgetallextendedwork, labouracceptextendedwork, labourrejectextendedwork, createearnings, getlastsevendaysearnings,
     gettodaysearnings, sendOtp, verifyOtp, DeleteLabor, labourOrderByLabourID, updateLabourLocation,
-    getByPatnerId
+    getByPatnerId, addQuery, getAllHelpandSupport, getHelpandSupportById, deleteHelpandSupport
 };

@@ -2,6 +2,7 @@
 const customermodel = require('../model/customer_model')
 const sha256 = require('sha256');
 const otpGenerator = require('otp-generators')
+const helpandSupport = require("../model/help_support");
 
 
 
@@ -283,4 +284,14 @@ const AddCuestomerId = async (req, res) => {
         })
     }
 }
-module.exports = { customersigninupbymobilenumber, customersignin, customerprofilegetbyid, updatecustomerdetails, customerlogout, sendOtp, verifyOtp, DeleCuestomer, AddCuestomerId }
+
+const addQuery = async (req, res) => {
+    try {
+        req.body.customerId = req.body.customerId;
+        const Data = await helpandSupport.create(req.body);
+        return res.status(200).json({ message: "Help and Support  create.", status: 200, data: Data });
+    } catch (err) {
+        return res.status(500).send({ msg: "internal server error", error: err.message, });
+    }
+};
+module.exports = { customersigninupbymobilenumber, customersignin, customerprofilegetbyid, updatecustomerdetails, customerlogout, sendOtp, verifyOtp, DeleCuestomer, AddCuestomerId, addQuery }
