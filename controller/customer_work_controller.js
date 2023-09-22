@@ -126,6 +126,7 @@ const getworkhistorybyworkid = (req, res) => {
         })
 }
 const stopWorkbyworkid = async (req, res) => {
+    const workid = req.params._id;
     let findData = await customerworkmodel.findById(workid);
     if (findData) {
         await customerworkmodel.findByIdAndUpdate({ _id: workid }, { $set: { workstatus: "STOP" } }, { new: true })
