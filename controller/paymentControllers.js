@@ -54,8 +54,8 @@ exports.CreatePaymentOrder = async (req, res) => {
             let obj = { userId: data.cuestomerId, orderId: data._id, amount: data.amount, orderStatus: "Ordered", status: req.body.paymentstatus, paymentMethod: req.body.paymentMethod, type: "given" }
             const OrderPlaced = await payment.create(obj);
             if (OrderPlaced) {
-                const data = await customerworkmodel.findByIdAndUpdate({ _id: data._id }, { $set: { paymentstatus: req.body.paymentstatus } }, { new: true });
-                if (data) {
+                const data1 = await customerworkmodel.findByIdAndUpdate({ _id: data._id }, { $set: { paymentstatus: req.body.paymentstatus } }, { new: true });
+                if (data1) {
                     return res.status(200).json({ message: "Your Order Placed ", details: OrderPlaced, sucess: true })
                 }
             }

@@ -133,8 +133,7 @@ const verifyOtp = async (req, res) => {
             return res.status(400).json({ message: "Invalid OTP" });
         }
         const updated = await customermodel.findByIdAndUpdate({ _id: user._id }, { $set: { verified: true } }, { new: true });
-        let obj = { id: updated._id }
-        return res.status(200).send({ status: 200, message: "logged in successfully", data: obj });
+        return res.status(200).send({ status: 200, message: "logged in successfully", data: updated });
     } catch (err) {
         return res.status(400).json({
             message: err.message
