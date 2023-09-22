@@ -10,6 +10,7 @@ const router = express();
 router.post('/payment/:orderId', payment.CreatePaymentOrder);
 router.get('/payment', payment.getAllPayments);
 router.get('/payment/:id', payment.GetPaymentsById)
+router.get('/paymentbyUserId/:id', payment.GetPaymentsByUserId)
 router.get('/payment/patnerId/:id', payment.getPaymentPaypatnerId)
 //Labour controllers 
 router.post('/labour/payment/create', labourPayment.CreatePaymentOrder)
