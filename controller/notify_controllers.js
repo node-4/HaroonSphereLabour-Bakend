@@ -19,7 +19,6 @@ exports.AddNotify = async (req, res) => {
         })
     }
 }
-
 exports.getNotification = async (req, res) => {
     try {
         const data = await notify.find();
@@ -32,8 +31,20 @@ exports.getNotification = async (req, res) => {
         })
     }
 }
-
-
+exports.getNotificationbyUserId = async (req, res) => {
+    try {
+        const data = await notify.find({ userId: req.params.customerId });
+        if (data.length == 0) {
+            return res.status(200).json({ message: 'No Notification', data: [] })
+        } else {
+            return res.status(200).json({ message: 'Get All Notification', data: data })
+        }
+    } catch (err) {
+        return res.status(400).json({
+            message: err.message
+        })
+    }
+}
 exports.getNotificationById = async (req, res) => {
     try {
         const data = await notify.findById({ _id: req.params.id });
@@ -46,8 +57,6 @@ exports.getNotificationById = async (req, res) => {
         })
     }
 }
-
-
 exports.updateNotify = async (req, res) => {
     try {
         await notify.findByIdAndUpdate({ _id: req.params.id }, {
@@ -64,8 +73,6 @@ exports.updateNotify = async (req, res) => {
         })
     }
 }
-
-
 exports.DeleteNotify = async (req, res) => {
     try {
         await notify.findByIdAndDelete({ _id: req.params.id });

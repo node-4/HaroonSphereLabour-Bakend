@@ -11,5 +11,6 @@ router.put('/notify/:id', notify.updateNotify);
 router.delete('/notify/:id', notify.DeleteNotify);
 
 
+router.get('/notifyByUserId/:customerId', notify.getNotificationbyUserId);
 
 module.exports = router; 
