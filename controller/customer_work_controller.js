@@ -93,7 +93,7 @@ const getextendworkbyworkid = (req, res) => {
 }
 const Allwork = async (req, res) => {
     try {
-        const data = await customerworkmodel.find({ customerid: req.params.customerid });
+        const data = await customerworkmodel.find({ customerid: req.params.customerid, paymentstatus: "done" });
         if (data.length == 0) {
             return res.status(401).json({ message: "No Order " })
         } else {
