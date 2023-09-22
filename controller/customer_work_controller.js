@@ -125,4 +125,13 @@ const getworkhistorybyworkid = (req, res) => {
             })
         })
 }
-module.exports = { customercreatework, getworkbyid, Allwork, extendwork, getextendworkbyworkid, getworkhistorybyworkid }
+const stopWorkbyworkid = async (req, res) => {
+    let findData = await customerworkmodel.findById(workid);
+    if (findData) {
+        await customerworkmodel.findByIdAndUpdate({ _id: workid }, { $set: { workstatus: "STOP" } }, { new: true })
+        return res.status(200).json({ StatusCode: 200, Status: 'success', message: 'Work stop successfully', status: 'success', })
+    } else {
+        return res.status(404).json({ StatusCode: 404, Status: 'success', message: 'work not found', status: 'success', })
+    }
+}
+module.exports = { customercreatework, stopWorkbyworkid, getworkbyid, Allwork, extendwork, getextendworkbyworkid, getworkhistorybyworkid }
