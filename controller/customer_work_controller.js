@@ -38,18 +38,6 @@ const customercreatework = (req, res) => {
     }).catch((err) => {
         return res.send({ status: 400, error: err.message, })
     })
-
-
-
-
-    //  else {
-    //   return  res.send('you are not a customer')
-    // }}
-
-    // else {
-    //   return  res.send('you should login first')
-    // }
-
 }
 const getworkbyid = (req, res) => {
     const workid = req.params._id;
@@ -103,6 +91,21 @@ const getextendworkbyworkid = (req, res) => {
         })
     })
 }
+const Allwork = async (req, res) => {
+    try {
+        const data = await customerworkmodel.find({ customerid: req.params.customerid });
+        if (data.length == 0) {
+            return res.status(401).json({ message: "No Order " })
+        } else {
+            return res.status(200).json({ message: "Order - Details ", details: data, sucess: true })
+        }
+    } catch (err) {
+        return res.status(400).json({
+            message: err.message,
+            sucess: false
+        })
+    }
+}
 const getworkhistorybyworkid = (req, res) => {
     const workid = req.params._id;
     customerworkmodel.findById(workid).then((result) => {
@@ -122,4 +125,4 @@ const getworkhistorybyworkid = (req, res) => {
             })
         })
 }
-module.exports = { customercreatework, getworkbyid, extendwork, getextendworkbyworkid, getworkhistorybyworkid }
+module.exports = { customercreatework, getworkbyid, Allwork, extendwork, getextendworkbyworkid, getworkhistorybyworkid }

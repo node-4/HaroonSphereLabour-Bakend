@@ -4,10 +4,14 @@ const mongoose = require("mongoose");
 
 const customerratingschema = new mongoose.Schema({
     customerid: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Customer",
+        required: true
     },
     workid: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Customerwork",
+        required: true
     },
     comment: {
         type: String,
