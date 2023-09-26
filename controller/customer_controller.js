@@ -73,11 +73,11 @@ const customersigninupbymobilenumber = (req, res) => {
 //                     message: 'customer Signup sucessfully',
 //                     user: result,
 //                 }
-//                 res.send(response)
+//                return  res.send(response)
 //             })
 //                 .catch((err) => {
 //                     console.log(err)
-//                     res.send({
+//                    return  res.send({
 //                         status: 400,
 //                         error: err.message,
 //                     })

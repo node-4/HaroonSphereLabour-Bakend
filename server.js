@@ -22,7 +22,7 @@ const staticpath = path.join(__dirname, "./public");
 app.use(express.static(staticpath));
 app.use(express.static('images'));
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    return res.send("Hello World!");
 });
 const labour = require("./route/labour_route");
 const customer = require("./route/customer_route");
