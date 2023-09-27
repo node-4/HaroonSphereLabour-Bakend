@@ -33,7 +33,7 @@ exports.getNotification = async (req, res) => {
 }
 exports.getNotificationbyUserId = async (req, res) => {
     try {
-        const data = await notify.find({ userId: req.params.customerId });
+        const data = await notify.find({ $or: [{ labourId: req.params.customerId }, { userId: req.params.customerId }] });
         if (data.length == 0) {
             return res.status(200).json({ message: 'No Notification', data: [] })
         } else {
