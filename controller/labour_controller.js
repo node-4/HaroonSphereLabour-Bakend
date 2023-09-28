@@ -296,20 +296,19 @@ const labourlogout = async (req, res) => {
     }
 
 }
-const labourgetallwork = (req, res) => {
-
-    customerworkmodel.find({ workstatus: 'pending', }).then((result) => {
-        const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: result, }
-        return res.send(response)
-    })
-        .catch((err) => {
-            console.log(err)
-            return res.send({
-                status: 400,
-                error: err.message,
-            })
-        })
-
+const labourgetallwork = async (req, res) => {
+    try {
+        let findCustomer = await customerworkmodel.find({ workstatus: 'pending' }).populate('customerid');
+        if (findCustomer) {
+            const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: findCustomer, }
+            return res.send(response)
+        } else {
+            const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: {}, }
+            return res.send(response)
+        }
+    } catch (error) {
+        return res.send({ status: 400, error: err.message, })
+    }
 }
 const labourgetworkbyworkid = (req, res) => {
     const _id = req.params._id;
