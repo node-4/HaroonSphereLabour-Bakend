@@ -373,6 +373,21 @@ const rejectworkbylabour = (req, res) => {
         }
     })
 }
+const labourgetallorder = async (req, res) => {
+    try {
+        let findCustomer = await customerworkmodel.find({ status: { $elemMatch: { labourid: req.body.labourid, workstatus: "Accepted" } } }).populate({ path: 'customerid', select: 'mobilenumber' });
+        if (findCustomer) {
+            const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: findCustomer, }
+            return res.send(response)
+        } else {
+            const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: {}, }
+            return res.send(response)
+        }
+    } catch (error) {
+        return res.send({ status: 400, error: err.message, })
+    }
+}
+
 //labou get extended work by work id
 const labourgetextendwork = (req, res) => {
     const _id = req.params._id;
@@ -586,7 +601,7 @@ const deleteHelpandSupport = async (req, res) => {
 
 
 module.exports = {
-    updatelabourdetails, laboursignup, laboursignin, labourlogout, getlabourprofilebyid,
+    labourgetallorder, updatelabourdetails, laboursignup, laboursignin, labourlogout, getlabourprofilebyid,
     labourgetallwork, labourgetworkbyworkid, acceptworkbylabour, rejectworkbylabour, labourgetextendwork,
     labourgetallextendedwork, labouracceptextendedwork, labourrejectextendedwork, createearnings, getlastsevendaysearnings,
     gettodaysearnings, sendOtp, verifyOtp, DeleteLabor, labourOrderByLabourID, updateLabourLocation,

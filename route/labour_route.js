@@ -1,5 +1,5 @@
 const express = require("express");
-const { updatelabourdetails, laboursignup, laboursignin, labourlogout, getlabourprofilebyid, labourgetallwork, labourgetworkbyworkid,
+const { labourgetallorder, updatelabourdetails, laboursignup, laboursignin, labourlogout, getlabourprofilebyid, labourgetallwork, labourgetworkbyworkid,
     acceptworkbylabour, rejectworkbylabour, labourgetextendwork, labourgetallextendedwork, labourrejectextendedwork,
     labouracceptextendedwork, createearnings, getlastsevendaysearnings, gettodaysearnings, sendOtp, verifyOtp, DeleteLabor, labourOrderByLabourID,
     updateLabourLocation, getByPatnerId, addQuery, getAllHelpandSupport, getHelpandSupportById, deleteHelpandSupport
@@ -41,6 +41,7 @@ router.get("/getHelpandSupportById/:_id", getHelpandSupportById);
 router.delete("/deleteHelpandSupport/:_id", deleteHelpandSupport);
 
 
+router.get("/labourgetallorder/:_id", labourgetallorder);
 
 
 module.exports = router; 
