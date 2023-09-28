@@ -135,23 +135,15 @@ const createearnings = (req, res) => {
     });
 
 }
-const getlastsevendaysearnings = (req, res) => {
+const getlastsevendaysearnings = async (req, res) => {
 
     const _id = req.params._id;
     var dateOffset = (24 * 60 * 60 * 1000) * 7; //7 days
     var lastsevenday = new Date();
     lastsevenday.setTime(lastsevenday.getTime() - dateOffset);
     console.log(lastsevenday);
-
-
-    labourmodel.find({ _id: _id }, {
-        earnings: {
-            $elemMatch:
-            {
-                dateandtime: { $gte: lastsevenday }
-            }
-        }
-    }).then((result) => {
+    let result = await labourmodel.find({ _id: _id }, { earnings: { $elemMatch: { dateandtime: { $gte: lastsevenday } } } });
+    if (result) {
         const response = {
             StatusCode: 200,
             Status: 'sucess',
@@ -159,14 +151,15 @@ const getlastsevendaysearnings = (req, res) => {
             labour: result,
         }
         return res.send(response)
-    })
-        .catch((err) => {
-            console.log(err)
-            return res.send({
-                status: 400,
-                error: err.message,
-            })
-        })
+    } else {
+        const response = {
+            StatusCode: 200,
+            Status: 'sucess',
+            message: 'Get last seven days earnings successfully.',
+            labour: result,
+        }
+    }
+
 
 
 }
