@@ -298,7 +298,7 @@ const labourlogout = async (req, res) => {
 }
 const labourgetallwork = async (req, res) => {
     try {
-        let findCustomer = await customerworkmodel.find({ workstatus: 'pending' }).populate('customerid');
+        let findCustomer = await customerworkmodel.find({ workstatus: 'pending' }).populate({ path: 'customerid', select: 'mobilenumber' });
         if (findCustomer) {
             const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: findCustomer, }
             return res.send(response)
