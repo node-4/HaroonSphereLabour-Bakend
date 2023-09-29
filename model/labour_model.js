@@ -14,7 +14,6 @@ const labourschema = new mongoose.Schema({
     },
     typesofwork: {
         type: String,
-
     },
     location: {
         longitude: {

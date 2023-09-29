@@ -23,6 +23,10 @@ const customeworkrschema = new mongoose.Schema({
         type: String,
         require: true,
     },
+    otpVerified: {
+        type: Boolean,
+        default: false
+    },
     noofhours: {
         type: Number,
     },
@@ -67,6 +71,7 @@ const customeworkrschema = new mongoose.Schema({
     },
     isextended: {
         type: Boolean,
+        default: false
     },
     extentdworkmessage: {
         type: String,

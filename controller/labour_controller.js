@@ -594,7 +594,21 @@ const deleteHelpandSupport = async (req, res) => {
         return res.status(500).send({ msg: "internal server error", error: err.message, });
     }
 };
-
+const VerifyOrder = async (req, res) => {
+    try {
+        const data = await customerworkmodel.findById({ _id: req.params.id });
+        if (data.otp === req.body.otp) {
+            const data1 = await customerworkmodel.findByIdAndUpdate({ _id: data._id }, { $set: { otpVerified: true } }, { new: true });
+            return res.status(200).json({ message: "Otp verified", data: data1 })
+        }
+        return res.status(400).json({ message: "Otp Not Valid " })
+    } catch (err) {
+        return res.status(400).json({
+            message: err.message,
+            sucess: false
+        })
+    }
+}
 
 
 
@@ -605,5 +619,5 @@ module.exports = {
     labourgetallwork, labourgetworkbyworkid, acceptworkbylabour, rejectworkbylabour, labourgetextendwork,
     labourgetallextendedwork, labouracceptextendedwork, labourrejectextendedwork, createearnings, getlastsevendaysearnings,
     gettodaysearnings, sendOtp, verifyOtp, DeleteLabor, labourOrderByLabourID, updateLabourLocation,
-    getByPatnerId, addQuery, getAllHelpandSupport, getHelpandSupportById, deleteHelpandSupport
+    getByPatnerId, addQuery, getAllHelpandSupport, getHelpandSupportById, deleteHelpandSupport, VerifyOrder
 };

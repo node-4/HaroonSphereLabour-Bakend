@@ -2,7 +2,7 @@ const express = require("express");
 const { labourgetallorder, updatelabourdetails, laboursignup, laboursignin, labourlogout, getlabourprofilebyid, labourgetallwork, labourgetworkbyworkid,
     acceptworkbylabour, rejectworkbylabour, labourgetextendwork, labourgetallextendedwork, labourrejectextendedwork,
     labouracceptextendedwork, createearnings, getlastsevendaysearnings, gettodaysearnings, sendOtp, verifyOtp, DeleteLabor, labourOrderByLabourID,
-    updateLabourLocation, getByPatnerId, addQuery, getAllHelpandSupport, getHelpandSupportById, deleteHelpandSupport
+    updateLabourLocation, getByPatnerId, addQuery, getAllHelpandSupport, getHelpandSupportById, deleteHelpandSupport, VerifyOrder
 } = require('../controller/labour_controller');
 const router = express.Router();
 var multer = require("multer");
@@ -39,9 +39,8 @@ router.post("/addQuery", addQuery);
 router.get("/getAllHelpandSupport", getAllHelpandSupport);
 router.get("/getHelpandSupportById/:_id", getHelpandSupportById);
 router.delete("/deleteHelpandSupport/:_id", deleteHelpandSupport);
-
-
 router.get("/labourgetallorder/:labourid", labourgetallorder);
+router.post("/VerifyOrder/:id", VerifyOrder);
 
 
 module.exports = router; 
