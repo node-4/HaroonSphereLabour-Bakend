@@ -375,7 +375,7 @@ const rejectworkbylabour = (req, res) => {
 }
 const labourgetallorder = async (req, res) => {
     try {
-        let findCustomer = await customerworkmodel.find({ status: { $elemMatch: { labourid: req.body.labourid, workstatus: "Accepted" } } }).populate({ path: 'customerid', select: 'mobilenumber' });
+        let findCustomer = await customerworkmodel.find({ status: { $elemMatch: { labourid: req.params.labourid, workstatus: "Accepted" } } }).populate({ path: 'customerid', select: 'mobilenumber' });
         if (findCustomer) {
             const response = { StatusCode: 200, Status: 'sucess', message: 'labour get all work successfully.', allwork: findCustomer, }
             return res.send(response)

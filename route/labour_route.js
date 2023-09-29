@@ -41,7 +41,7 @@ router.get("/getHelpandSupportById/:_id", getHelpandSupportById);
 router.delete("/deleteHelpandSupport/:_id", deleteHelpandSupport);
 
 
-router.get("/labourgetallorder/:_id", labourgetallorder);
+router.get("/labourgetallorder/:labourid", labourgetallorder);
 
 
 module.exports = router; 
